@@ -1,0 +1,28 @@
+{
+  "name": "estocando",
+  "version": "1.0.0",
+  "description": "API de controle de estoque com TypeScript, Express e Prisma",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "migrate": "prisma migrate dev",
+    "generate": "prisma generate"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^5.16.1",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "prisma": "^5.16.1",
+     "@types/express": "^5.0.3",
+    "@types/node": "^24.3.1",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}

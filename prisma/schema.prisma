@@ -1,0 +1,48 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" 
+  url      = env("DATABASE_URL")
+}
+
+model Item {
+  id          String            @id @default(uuid())
+  name        String
+  description String?
+  quantity    Int               @default(0)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  adjustments StockAdjustment[]
+}
+
+model StockAdjustment {
+  id         String   @id @default(uuid())
+  item       Item     @relation(fields: [itemId], references: [id])
+  itemId     String
+  quantity   Int
+  type       AdjustmentType
+  createdAt  DateTime @default(now())
+}
+
+enum AdjustmentType {
+  IN
+  OUT
+}
+
+
+model RequestLog {
+  id          String   @id @default(uuid())
+  method      String
+  path        String
+  status      Int
+  durationMs  Int
+  ip          String?
+  userAgent   String?
+  body        Json?
+  params      Json?
+  query       Json?
+  createdAt   DateTime @default(now())
+}
