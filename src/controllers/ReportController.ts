@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import ReportService from "../services/ReportService";
+import ReportService from "../services/ReportService.js";
 
 class ReportController {
   async stockLevels(req: Request, res: Response) {

@@ -2,10 +2,10 @@
   "name": "estocando",
   "version": "1.0.0",
   "description": "API de controle de estoque com TypeScript, Express e Prisma",
-  "main": "dist/server.js",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/server.ts",
+    "dev": "nodemon --exec node --loader ts-node/esm src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "migrate": "prisma migrate dev",

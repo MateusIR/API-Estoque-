@@ -1,7 +1,7 @@
 import express from "express";
-import itemRoutes from "./routes/itemRoutes";
-import reportRoutes from "./routes/reportRoutes";
-import { requestLogger } from "./middleware/loggerMiddleware";
+import itemRoutes from "./routes/itemRoutes.js";
+import reportRoutes from "./routes/reportRoutes.js";
+import { requestLogger } from "./middleware/loggerMiddleware.js";
 
 const app = express();
 const PORT = process.env.PORT || 3333;

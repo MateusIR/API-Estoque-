@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import prisma from "../infra/prisma";
+import prisma from "../infra/prisma.js";
 
 export async function requestLogger(req: Request, res: Response, next: NextFunction) {
   const start = Date.now();
@@ -11,8 +11,8 @@ export async function requestLogger(req: Request, res: Response, next: NextFunct
         data: {
           method: req.method,
           path: req.originalUrl,
-          statusCode: res.statusCode,
-          duration,
+          status: res.statusCode,
+          durationMs: duration,
         },
       });
     } catch (err) {

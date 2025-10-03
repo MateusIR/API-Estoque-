@@ -1,4 +1,4 @@
-import prisma from "../infra/prisma";
+import prisma from "../infra/prisma.js";
 
 class ItemService {
   async create(data: { name: string; quantity: number; description?: string }) {
