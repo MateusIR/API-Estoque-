@@ -107,7 +107,9 @@ npm install
 
 npx prisma generate
 
-npm run dev (usa nodemon / ts-node)
+npx prisma migrate dev
+
+npm run dev ()
 
 ## Exemplos de uso
 
