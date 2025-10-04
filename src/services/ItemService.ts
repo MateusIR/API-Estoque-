@@ -21,27 +21,31 @@ class ItemService {
     return prisma.item.delete({ where: { id } });
   }
 
-  async adjustStock(id: string, type: "IN" | "OUT", quantity: number) {
-    const item = await prisma.item.findUnique({ where: { id } });
-    if (!item) throw new Error("Item não encontrado");
+  async adjustStock(id: string, type: "IN" | "OUT", quantity: number, userId: string) {
+  const item = await prisma.item.findUnique({ where: { id } });
+  if (!item) throw new Error("Item não encontrado");
 
-    if (type === "OUT" && item.quantity < quantity) {
-      throw new Error("Quantidade insuficiente em estoque");
-    }
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user) throw new Error("Usuário não encontrado");
 
-    const newQuantity = type === "IN" ? item.quantity + quantity : item.quantity - quantity;
-
-    const updated = await prisma.item.update({
-      where: { id },
-      data: { quantity: newQuantity },
-    });
-
-    await prisma.stockAdjustment.create({
-      data: { itemId: id, type, quantity },
-    });
-
-    return updated;
+  if (type === "OUT" && item.quantity < quantity) {
+    throw new Error("Quantidade insuficiente em estoque");
   }
+
+  const newQuantity = type === "IN" ? item.quantity + quantity : item.quantity - quantity;
+
+  const updated = await prisma.item.update({
+    where: { id },
+    data: { quantity: newQuantity },
+  });
+
+  await prisma.stockAdjustment.create({
+    data: { itemId: id, type, quantity, userId },
+  });
+
+  return updated;
+}
+
 }
 
 export default new ItemService();

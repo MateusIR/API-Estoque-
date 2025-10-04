@@ -65,23 +65,26 @@ class ItemController {
   }
 
   async adjust(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-      const { type, quantity } = req.body;
+  try {
+    const { id } = req.params;
+    const { type, quantity, userId } = req.body;
 
-      if (!["IN", "OUT"].includes(type)) {
-        return res.status(400).json({ error: "Tipo deve ser 'IN' ou 'OUT'" });
-      }
-      if (!quantity || quantity <= 0) {
-        return res.status(400).json({ error: "Quantidade deve ser maior que zero" });
-      }
-
-      const updated = await ItemService.adjustStock(id, type, quantity);
-      res.json(updated);
-    } catch (err: any) {
-      console.error("Erro adjust stock:", err);
-      res.status(400).json({ error: err.message });
+    if (!userId) {
+      return res.status(400).json({ error: "userId é obrigatório" });
     }
+
+    if (!["IN", "OUT"].includes(type)) {
+      return res.status(400).json({ error: "Tipo deve ser 'IN' ou 'OUT'" });
+    }
+    if (!quantity || quantity <= 0) {
+      return res.status(400).json({ error: "Quantidade deve ser maior que zero" });
+    }
+
+    const updated = await ItemService.adjustStock(id, type, quantity, userId);
+    res.json(updated);
+  } catch (err: any) {
+    console.error("Erro adjust stock:", err);
+    res.status(400).json({ error: err.message });
   }
 }
 

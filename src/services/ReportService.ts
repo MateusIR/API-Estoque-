@@ -16,12 +16,16 @@ class ReportService {
   }
 
   async getRecentAdjustments(limit: number = 20) {
-    return prisma.stockAdjustment.findMany({
-      orderBy: { createdAt: "desc" },
-      take: Math.min(limit, 100),
-      include: { item: true },
-    });
-  }
+  return prisma.stockAdjustment.findMany({
+    orderBy: { createdAt: "desc" },
+    take: Math.min(limit, 100),
+    include: {
+      item: true,
+      user: { select: { id: true, name: true } }
+    },
+  });
+}
+
 
   async getLogs(limit?: number) {
     if (limit === undefined) {

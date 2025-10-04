@@ -8,6 +8,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String            @id @default(uuid())
+  name      String
+  email     String?           @unique
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  adjustments StockAdjustment[]
+}
+
 model Item {
   id          String            @id @default(uuid())
   name        String
@@ -22,6 +31,8 @@ model StockAdjustment {
   id         String   @id @default(uuid())
   item       Item     @relation(fields: [itemId], references: [id])
   itemId     String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
   quantity   Int
   type       AdjustmentType
   createdAt  DateTime @default(now())
@@ -31,7 +42,6 @@ enum AdjustmentType {
   IN
   OUT
 }
-
 
 model RequestLog {
   id          String   @id @default(uuid())
