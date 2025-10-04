@@ -5,10 +5,6 @@ class ItemController {
   async create(req: Request, res: Response) {
     try {
       const { name, quantity, description } = req.body;
-      if (!name || quantity === undefined) {
-        return res.status(400).json({ error: "Nome e quantidade são obrigatórios" });
-      }
-
       const item = await ItemService.create({ name, quantity, description });
       res.status(201).json(item);
     } catch (err: any) {
@@ -65,26 +61,16 @@ class ItemController {
   }
 
   async adjust(req: Request, res: Response) {
-  try {
-    const { id } = req.params;
-    const { type, quantity, userId } = req.body;
+    try {
+      const { id } = req.params;
+      const { type, quantity, userId } = req.body;
 
-    if (!userId) {
-      return res.status(400).json({ error: "userId é obrigatório" });
+      const updated = await ItemService.adjustStock(id, type, quantity, userId);
+      res.json(updated);
+    } catch (err: any) {
+      console.error("Erro adjust stock:", err);
+      res.status(400).json({ error: err.message });
     }
-
-    if (!["IN", "OUT"].includes(type)) {
-      return res.status(400).json({ error: "Tipo deve ser 'IN' ou 'OUT'" });
-    }
-    if (!quantity || quantity <= 0) {
-      return res.status(400).json({ error: "Quantidade deve ser maior que zero" });
-    }
-
-    const updated = await ItemService.adjustStock(id, type, quantity, userId);
-    res.json(updated);
-  } catch (err: any) {
-    console.error("Erro adjust stock:", err);
-    res.status(400).json({ error: err.message });
   }
 }
 

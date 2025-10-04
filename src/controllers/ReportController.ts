@@ -15,10 +15,6 @@ class ReportController {
   async recentAdjustments(req: Request, res: Response) {
     try {
       const limit = req.query.limit ? Number(req.query.limit) : 20;
-      if (isNaN(limit) || limit <= 0 || limit > 100) {
-        return res.status(400).json({ error: "escolha um numero de logs entre 1 - 100" });
-      }
-
       const adjustments = await ReportService.getRecentAdjustments(limit);
       res.json(adjustments);
     } catch (err) {
