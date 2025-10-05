@@ -37,6 +37,24 @@ export const recentAdjustmentsQuerySchema = z.object({
     .optional(),
 });
 
+export const uuidParamSchema = z.object({
+  id: z.string().uuid("O ID fornecido na URL não é um UUID válido"),
+});
+
+export const updateReportSchema = z.object({
+  name: z.string().min(1).optional(),
+  quantity: z.number().int().nonnegative().optional(),
+  description: z.string().optional(),
+});
+
+export const logsQuerySchema = z.object({
+  limit: z
+    .string()
+    .transform((s) => parseInt(s, 10))
+    .refine((n) => !isNaN(n) && n >= 1 && n <= 100, "O limite deve ser um número entre 1 e 100")
+    .optional(),
+});
+
 export type CreateUserInput = z.infer<typeof createUserSchema>;
 export type UpdateUserInput = z.infer<typeof updateUserSchema>;
 export type CreateItemInput = z.infer<typeof createItemSchema>;

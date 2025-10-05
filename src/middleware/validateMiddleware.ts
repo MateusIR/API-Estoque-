@@ -31,3 +31,19 @@ export function validateQuery(schema: ZodSchema<any>) {
     next();
   };
 }
+
+export function validateParams(schema: ZodSchema<any>) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const parseResult = schema.safeParse(req.params);
+    if (!parseResult.success) {
+      const errors = parseResult.error.issues.map((issue) => ({
+        path: issue.path.join("."),
+        message: issue.message,
+      }));
+      return res.status(400).json({ error: "Validation error nos parâmetros da URL", details: errors });
+    }
+
+    req.params = parseResult.data;
+    next();
+  };
+}

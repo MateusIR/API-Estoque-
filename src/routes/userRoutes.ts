@@ -1,14 +1,14 @@
 import { Router } from "express";
 import UserController from "../controllers/UserController.js";
-import { validateBody } from "../middleware/validateMiddleware.js";
-import { createUserSchema, updateUserSchema } from "../validators/schemas.js";
+import { validateBody, validateParams } from "../middleware/validateMiddleware.js"; 
+import { createUserSchema, updateUserSchema, uuidParamSchema } from "../validators/schemas.js"; 
 
 const router = Router();
 
 router.post("/", validateBody(createUserSchema), UserController.create);
 router.get("/", UserController.list);
-router.get("/:id", UserController.get);
-router.put("/:id", validateBody(updateUserSchema), UserController.update);
-router.delete("/:id", UserController.delete);
+router.get("/:id", validateParams(uuidParamSchema), UserController.get); 
+router.put("/:id", validateParams(uuidParamSchema), validateBody(updateUserSchema), UserController.update); // Adicionado
+router.delete("/:id", validateParams(uuidParamSchema), UserController.delete);
 
 export default router;
