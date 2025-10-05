@@ -186,7 +186,7 @@ Remove registro de ajuste.
 
 
 ──────────────────────────────  
-🧾 AUDITORIA AUTOMÁTICA 
+🧾 AUDITORIA AUTOMÁTICA   
 ──────────────────────────────  
 Cada requisição gera um registro:
 - Método (GET, POST, etc)
