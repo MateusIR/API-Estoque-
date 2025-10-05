@@ -1,6 +1,18 @@
 import prisma from "../infra/prisma.js";
 
 class ReportService {
+
+async delete(id: string) {
+    return prisma.stockAdjustment.delete({ where: { id } });
+  }
+
+  async findById(id: string) {
+    return prisma.stockAdjustment.findUnique({ where: { id } });
+  }
+  async update(id: string, data: { name?: string; quantity?: number; description?: string }) {
+    return prisma.stockAdjustment.update({ where: { id }, data });
+  }
+
   async getStockLevels() {
     return prisma.item.findMany({
       select: {
