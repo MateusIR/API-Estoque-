@@ -3,6 +3,7 @@ import itemRoutes from "./routes/itemRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import indexRoutes from "./routes/indexRoutes.js";
+import docsRoutes from "./routes/docsRoutes.js";
 import { requestLogger } from "./middleware/loggerMiddleware.js";
 
 const app = express();
@@ -15,6 +16,7 @@ app.use('/', indexRoutes);
 app.use("/users", userRoutes);
 app.use("/items", itemRoutes);
 app.use("/reports", reportRoutes);
+app.use("/docs", docsRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Estocando API rodando na porta ${PORT}`);
