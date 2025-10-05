@@ -5,9 +5,9 @@ API de controle de estoque desenvolvida com Node.js, Express, Prisma (PostgreSQL
 Suporta CRUD completo de usuários, itens e relatórios, com validações robustas e documentação automática via Swagger.  
 Cada requisição é registrada em banco para auditoria completa.
 
-──────────────────────────────
-🧩 FUNCIONALIDADES PRINCIPAIS
-──────────────────────────────
+──────────────────────────────  
+🧩 FUNCIONALIDADES PRINCIPAIS  
+──────────────────────────────  
 - CRUD completo de Usuários
   - POST /users, GET /users, GET /users/:id, PUT /users/:id, DELETE /users/:id
 - CRUD completo de Itens
