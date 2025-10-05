@@ -26,59 +26,59 @@ Cada requisição é registrada em banco para auditoria completa.
 - Swagger
   - Documentação acessível via /docs 
 
-──────────────────────────────
-🗂 ESTRUTURA DO PROJETO
-──────────────────────────────
-src/
-├─ controllers/
-│  ├─ ItemController.ts
-│  ├─ ReportController.ts
-│  └─ UserController.ts
-│
-├─ services/
-│  ├─ ItemService.ts
-│  ├─ ReportService.ts
-│  └─ UserService.ts
-│
-├─ infra/
-│  ├─ prisma.ts
-│  └─ loggerMiddleware.ts
-│
-├─ middleware/
-│  ├─ validateMiddleware.ts
-│  └─ loggerMiddleware.ts
-│
-├─ routes/
-│  ├─ itemRoutes.ts
-│  ├─ reportRoutes.ts
-│  ├─ userRoutes.ts
-│  ├─ docsRoutes.ts
-│  └─ indexRoutes.ts
-│
-├─ validators/
-│  └─ schemas.ts
-│
-├─ server.ts
-│
-prisma/
-└─ schema.prisma
+──────────────────────────────  
+🗂 ESTRUTURA DO PROJETO  
+──────────────────────────────  
+src/  
+├─ controllers/  
+│  ├─ ItemController.ts  
+│  ├─ ReportController.ts  
+│  └─ UserController.ts  
+│  
+├─ services/  
+│  ├─ ItemService.ts  
+│  ├─ ReportService.ts  
+│  └─ UserService.ts  
+│  
+├─ infra/  
+│  ├─ prisma.ts  
+│  └─ loggerMiddleware.ts  
+│  
+├─ middleware/  
+│  ├─ validateMiddleware.ts  
+│  └─ loggerMiddleware.ts  
+│  
+├─ routes/  
+│  ├─ itemRoutes.ts  
+│  ├─ reportRoutes.ts  
+│  ├─ userRoutes.ts  
+│  ├─ docsRoutes.ts  
+│  └─ indexRoutes.ts  
+│  
+├─ validators/  
+│  └─ schemas.ts  
+│  
+├─ server.ts  
+│  
+prisma/  
+└─ schema.prisma  
+  
+compose.yml  
+package.json  
+swagger.yaml  
+tsconfig.json  
+README.md  
 
-compose.yml
-package.json
-swagger.yaml
-tsconfig.json
-README.md
-
-──────────────────────────────
-🔧 REQUISITOS
-──────────────────────────────
+──────────────────────────────  
+🔧 REQUISITOS  
+──────────────────────────────  
 - Node.js ≥ 18
 - PostgreSQL (pode ser via Docker)
 - npm
 
-──────────────────────────────
-🚀 EXECUÇÃO LOCAL
-──────────────────────────────
+──────────────────────────────  
+🚀 EXECUÇÃO LOCAL  
+──────────────────────────────  
 # Instalar dependências
 npm install
 
@@ -95,12 +95,12 @@ A API rodará em:
 http://localhost:3333  
 Documentação Swagger: http://localhost:3333/docs
 
-──────────────────────────────
-📡 ENDPOINTS PRINCIPAIS
-──────────────────────────────
+──────────────────────────────  
+📡 ENDPOINTS PRINCIPAIS  
+──────────────────────────────  
 
-🧍 Usuários
-────────────
+🧍 Usuários  
+────────────  
 POST /users
 Cria novo usuário.
 {
@@ -120,8 +120,8 @@ Atualiza nome e/ou email.
 DELETE /users/:id
 Remove usuário.
 
-📦 Itens
-────────
+📦 Itens  
+────────  
 POST /items
 Cria novo item de estoque.
 {
@@ -146,8 +146,8 @@ Atualiza nome, descrição e/ou quantidade.
 DELETE /items/:id
 Remove item do estoque.
 
-🔄 Ajuste de Estoque
-────────────────────
+🔄 Ajuste de Estoque  
+────────────────────  
 POST /items/:id/adjust
 Ajusta o estoque de um item.
 {
@@ -163,8 +163,8 @@ Regras:
 - Se OUT, o estoque deve ser suficiente
 - Cria registro em StockAdjustment
 
-📊 Relatórios
-─────────────
+📊 Relatórios  
+─────────────  
 GET /reports/stock-levels
 Lista todos os itens com nível de estoque atual.
 
@@ -185,9 +185,9 @@ DELETE /reports/:id
 Remove registro de ajuste.
 
 
-──────────────────────────────
-🧾 AUDITORIA AUTOMÁTICA (RequestLog)
-──────────────────────────────
+──────────────────────────────  
+🧾 AUDITORIA AUTOMÁTICA 
+──────────────────────────────  
 Cada requisição gera um registro:
 - Método (GET, POST, etc)
 - Caminho (/items/123)
@@ -196,17 +196,17 @@ Cada requisição gera um registro:
 
 Tabela RequestLog é usada para relatórios via /reports/logs.
 
-──────────────────────────────
-🌐 SWAGGER
-──────────────────────────────
+──────────────────────────────  
+🌐 SWAGGER  
+──────────────────────────────  
 A documentação interativa é carregada do arquivo swagger.yaml.
 Disponível em:
 
 - Local: http://localhost:3333/docs
 
-──────────────────────────────
-🧰 TECNOLOGIAS USADAS
-──────────────────────────────
+──────────────────────────────  
+🧰 TECNOLOGIAS USADAS  
+──────────────────────────────  
 | Tecnologia       | Função                           |
 |------------------|----------------------------------|
 | Node.js + Express| API HTTP                         |
@@ -216,9 +216,9 @@ Disponível em:
 | Docker           | Banco de dados e ambiente        |
 | TypeScript       | Tipagem e robustez               |
 
-──────────────────────────────
-💾 EXEMPLO DE FLUXO
-──────────────────────────────
+──────────────────────────────  
+💾 EXEMPLO DE FLUXO  
+──────────────────────────────  
 1️⃣ Criar um usuário
 POST /users
 { "name": "Maria", "email": "maria@example.com" }
