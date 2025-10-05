@@ -109,7 +109,7 @@ npx prisma generate
 
 npx prisma migrate dev
 
-npm run dev ()
+npm run dev
 
 ## Exemplos de uso
 
