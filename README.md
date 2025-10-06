@@ -79,16 +79,19 @@ README.md
 ──────────────────────────────  
 🚀 EXECUÇÃO LOCAL  
 ──────────────────────────────  
-# Instalar dependências
+## Instalar dependências
 npm install
 
-# Gerar cliente Prisma
+## subir container com o banco (opcional)  
+docker compose up  
+
+## Gerar cliente Prisma
 npx prisma generate
 
-# Rodar migrações
+## Rodar migrações
 npx prisma migrate dev
 
-# Rodar servidor
+## Rodar servidor
 npm run dev
 
 A API rodará em:
