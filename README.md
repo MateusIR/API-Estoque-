@@ -82,7 +82,7 @@ README.md
 ## Instalar dependências
 npm install
 
-## subir container com o banco (opcional)  
+## Subir container com o banco (opcional)  
 docker compose up  
 
 ## Gerar cliente Prisma
