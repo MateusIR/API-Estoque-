@@ -27,11 +27,12 @@ export function validateQuery(schema: ZodSchema<any>) {
       }));
       return res.status(400).json({ error: "Validation error", details: errors });
     }
-    req.query = parseResult.data;
+
+    Object.assign(req.query, parseResult.data);
+
     next();
   };
 }
-
 export function validateParams(schema: ZodSchema<any>) {
   return (req: Request, res: Response, next: NextFunction) => {
     const parseResult = schema.safeParse(req.params);
