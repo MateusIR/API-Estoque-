@@ -1,4 +1,4 @@
-📦 Estocando API — v2.0
+📦 Estocando API
 =======================
 
 API de controle de estoque desenvolvida com Node.js, Express, Prisma (PostgreSQL) e Zod.  
