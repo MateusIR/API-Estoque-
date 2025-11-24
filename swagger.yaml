@@ -1,13 +1,15 @@
 openapi: 3.0.0
 info:
   title: Estocando API
-  description: API para controle de estoque simples. Permite gerenciar itens, usuários e visualizar relatórios de movimentação.
+  description: API para controle de estoque simples com Autenticação e Controle de Acesso.
   version: 1.0.0
 servers:
   - url: http://localhost:3333
     description: Servidor de Desenvolvimento Local
 
 tags:
+  - name: Autenticação
+    description: Endpoints de autenticação e tokens.
   - name: Itens
     description: Operações relacionadas aos itens em estoque.
   - name: Usuários
@@ -33,6 +35,37 @@ paths:
                 type: string
                 example: '<html>...</html>'
 
+  /auth/login:
+    post:
+      tags:
+        - Autenticação
+      summary: Autentica um usuário e retorna um token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+      responses:
+        '200':
+          description: Login bem-sucedido. Retorna o token JWT.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        '400':
+          description: E-mail ou senha inválidos.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Erro interno do servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /users:
     post:
       tags:
@@ -52,7 +85,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
         '400':
-          description: 'Erro de validação (ex: nome não fornecido).'
+          description: 'Erro de validação (ex: dados incompletos).'
           content:
             application/json:
               schema:
@@ -431,7 +464,7 @@ paths:
       tags:
         - Relatórios
       summary: Atualiza um registro de ajuste de estoque (Uso não recomendado)
-      description: "A funcionalidade deste endpoint é incerta. Aparenta atualizar um registro de ajuste com dados de item, o que pode não ser o comportamento esperado. Use com cautela."
+      description: "A funcionalidade deste endpoint é incerta. Use com cautela."
       parameters:
         - name: id
           in: path
@@ -494,6 +527,27 @@ paths:
 
 components:
   schemas:
+    LoginInput:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: "joao.silva@example.com"
+        password:
+          type: string
+          example: "minhasenha123"
+
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
     User:
       type: object
       properties:
@@ -506,16 +560,22 @@ components:
           type: string
           format: email
           nullable: true
+        role:
+          type: string
+          enum: [admin, user]
+          example: user
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
+
     CreateUserInput:
       type: object
       required:
         - name
+        - password
       properties:
         name:
           type: string
@@ -524,6 +584,14 @@ components:
           type: string
           format: email
           example: "joao.silva@example.com"
+        password:
+          type: string
+          example: "senha123"
+        role:
+          type: string
+          enum: [admin, user]
+          default: user
+
     UpdateUserInput:
       type: object
       properties:
@@ -534,6 +602,13 @@ components:
           type: string
           format: email
           example: "joao.d.silva@example.com"
+        password:
+          type: string
+          example: "novasenha456"
+        role:
+          type: string
+          enum: [admin, user]
+
     Item:
       type: object
       properties:
@@ -553,6 +628,7 @@ components:
         updatedAt:
           type: string
           format: date-time
+
     CreateItemInput:
       type: object
       required:
@@ -568,6 +644,7 @@ components:
         description:
           type: string
           example: "Caixa com 100 unidades"
+
     UpdateItemInput:
       type: object
       properties:
@@ -577,6 +654,7 @@ components:
           type: integer
         description:
           type: string
+
     AdjustStockInput:
       type: object
       required:
@@ -593,6 +671,7 @@ components:
         userId:
           type: string
           format: uuid
+
     StockAdjustment:
       type: object
       properties:
@@ -613,6 +692,7 @@ components:
         userId:
           type: string
           format: uuid
+
     StockAdjustmentWithDetails:
       allOf:
         - $ref: '#/components/schemas/StockAdjustment'
@@ -628,6 +708,7 @@ components:
                   format: uuid
                 name:
                   type: string
+
     RequestLog:
       type: object
       properties:
@@ -648,11 +729,15 @@ components:
         createdAt:
           type: string
           format: date-time
+
     Error:
       type: object
       properties:
         error:
           type: string
+        message:
+          type: string
+
     ErrorValidation:
       type: object
       properties:

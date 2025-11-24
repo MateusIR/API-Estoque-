@@ -1,14 +1,19 @@
+// src/routes/userRoutes.ts
 import { Router } from "express";
 import UserController from "../controllers/UserController.js";
 import { validateBody, validateParams } from "../middleware/validateMiddleware.js"; 
-import { createUserSchema, updateUserSchema, uuidParamSchema } from "../validators/schemas.js"; 
+import { createUserSchema, updateUserSchema, uuidParamSchema, registerSchema, loginSchema } from "../validators/schemas.js"; 
 
 const router = Router();
+
+
+router.post("/register", validateBody(registerSchema), UserController.register);
+router.post("/login", validateBody(loginSchema), UserController.login);
 
 router.post("/", validateBody(createUserSchema), UserController.create);
 router.get("/", UserController.list);
 router.get("/:id", validateParams(uuidParamSchema), UserController.get); 
-router.put("/:id", validateParams(uuidParamSchema), validateBody(updateUserSchema), UserController.update); // Adicionado
+router.put("/:id", validateParams(uuidParamSchema), validateBody(updateUserSchema), UserController.update);
 router.delete("/:id", validateParams(uuidParamSchema), UserController.delete);
 
 export default router;

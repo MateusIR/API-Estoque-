@@ -1,8 +1,20 @@
 import prisma from "../infra/prisma.js";
+import bcrypt from "bcryptjs";
 
 class UserService {
-  async create(data: { name: string; email?: string }) {
-    return prisma.user.create({ data });
+  async create(data: { name: string; email?: string; password?: string }) {
+    let hashed: string | undefined = undefined;
+    if (data.password) {
+      const salt = await bcrypt.genSalt(10);
+      hashed = await bcrypt.hash(data.password, salt);
+    }
+    return prisma.user.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        password: hashed,
+      },
+    });
   }
 
   async findAll() {
@@ -11,6 +23,10 @@ class UserService {
 
   async findById(id: string) {
     return prisma.user.findUnique({ where: { id } });
+  }
+
+  async findByEmail(email: string) {
+    return prisma.user.findUnique({ where: { email } });
   }
 
   async update(id: string, data: { name?: string; email?: string }) {

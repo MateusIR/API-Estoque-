@@ -2,8 +2,11 @@ import { Router } from "express";
 import ItemController from "../controllers/ItemController.js";
 import { validateBody, validateParams } from "../middleware/validateMiddleware.js"; 
 import { createItemSchema, updateItemSchema, adjustStockSchema, uuidParamSchema } from "../validators/schemas.js"; 
+import { authenticate } from "../middleware/authMiddleware.js";
 
 const router = Router();
+
+router.use(authenticate);
 
 router.post("/", validateBody(createItemSchema), ItemController.create);
 router.get("/", ItemController.list);

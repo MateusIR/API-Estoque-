@@ -7,8 +7,11 @@ import {
   uuidParamSchema,
   updateReportSchema,
 } from "../validators/schemas.js"; 
+import { authenticate } from "../middleware/authMiddleware.js";
 
 const router = Router();
+
+router.use(authenticate);
 
 router.get("/stock-levels", ReportController.stockLevels);
 router.get("/recent-adjustments", validateQuery(recentAdjustmentsQuerySchema), ReportController.recentAdjustments); 

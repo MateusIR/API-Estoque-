@@ -6,7 +6,9 @@ import userRoutes from "./routes/userRoutes.js";
 import indexRoutes from "./routes/indexRoutes.js";
 import docsRoutes from "./routes/docsRoutes.js";
 import { requestLogger } from "./middleware/loggerMiddleware.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3333;
 
