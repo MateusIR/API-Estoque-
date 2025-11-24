@@ -5,6 +5,7 @@ import reportRoutes from "./routes/reportRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import indexRoutes from "./routes/indexRoutes.js";
 import docsRoutes from "./routes/docsRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import { requestLogger } from "./middleware/loggerMiddleware.js";
 import dotenv from "dotenv";
 
@@ -46,6 +47,7 @@ app.use("/docs", docsRoutes);
 app.use("/users", userRoutes);
 app.use("/items", itemRoutes);
 app.use("/reports", reportRoutes);
+app.use("/auth", authRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Estocando API rodando na porta ${PORT}`);

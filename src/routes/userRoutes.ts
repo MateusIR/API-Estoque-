@@ -7,9 +7,6 @@ import { createUserSchema, updateUserSchema, uuidParamSchema, registerSchema, lo
 const router = Router();
 
 
-router.post("/register", validateBody(registerSchema), UserController.register);
-router.post("/login", validateBody(loginSchema), UserController.login);
-
 router.post("/", validateBody(createUserSchema), UserController.create);
 router.get("/", UserController.list);
 router.get("/:id", validateParams(uuidParamSchema), UserController.get); 
