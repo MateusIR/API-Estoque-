@@ -1,132 +1,239 @@
-# 📦 Estocando API
+📦 Estocando API
+=======================
 
-API de **controle de estoque**
-Suporta CRUD completo de itens, ajuste de estoque (entradas/saídas), relatórios básicos e grava log de todas as requisições no banco.
+API de controle de estoque desenvolvida com Node.js, Express, Prisma (PostgreSQL) e Zod.  
+Suporta CRUD completo de usuários, itens e relatórios, com validações robustas e documentação automática via Swagger.  
+Cada requisição é registrada em banco para auditoria completa.
 
----
-
-## 🧩 Principais funcionalidades
-
-- CRUD completo de itens (`POST /items`, `GET /items`, `GET /items/:id`, `PUT /items/:id`, `DELETE /items/:id`)
-- Ajuste de estoque com histórico (`POST /items/:id/adjust` — tipos `IN` / `OUT`)
+──────────────────────────────  
+🧩 FUNCIONALIDADES PRINCIPAIS  
+──────────────────────────────  
+- CRUD completo de Usuários
+  - POST /users, GET /users, GET /users/:id, PUT /users/:id, DELETE /users/:id
+- CRUD completo de Itens
+  - POST /items, GET /items, GET /items/:id, PUT /items/:id, DELETE /items/:id
+- Ajuste de estoque com histórico e vínculo a um usuário
+  - POST /items/:id/adjust — tipos IN / OUT, requer userId
 - Relatórios:
-  - `/reports/stock-levels` — níveis atuais de estoque (todos itens)
-  - `/reports/recent-adjustments` — ajustes recentes (parâmetro `limit`, padrão 20, max 100)
-  - `/reports/logs` — logs de requisições (padrão 25, se passado `limit` respeita 1–100)
-- Middleware que grava cada request em tabela `RequestLog` para auditoria
+  - /reports/stock-levels — níveis de estoque
+  - /reports/recent-adjustments — últimos ajustes
+  - /reports/logs — logs de requisições
+  - /reports/:id — detalhes de um ajuste específico
+- Middleware de auditoria
+  - Registra método, rota, status e duração de cada requisição na tabela RequestLog
+- Validação com Zod
+  - Todos os body, params e query passam por validação antes de atingir os controllers
+- Swagger
+  - Documentação acessível via /docs 
 
----
-
-## 🗂 Estrutura do projeto (resumida)
-
+──────────────────────────────  
+🗂 ESTRUTURA DO PROJETO  
+──────────────────────────────  
 src/  
 ├─ controllers/  
-│ ├─ ItemController.ts  
-│ └─ ReportController.ts  
+│  ├─ ItemController.ts  
+│  ├─ ReportController.ts  
+│  └─ UserController.ts  
+│  
 ├─ services/  
-│ ├─ ItemService.ts  
-│ └─ ReportService.ts  
+│  ├─ ItemService.ts  
+│  ├─ ReportService.ts  
+│  └─ UserService.ts  
+│  
 ├─ infra/  
-│ ├─ prisma.ts  
-│ └─ loggerMiddleware.ts  
+│  ├─ prisma.ts  
+│  └─ loggerMiddleware.ts  
+│  
+├─ middleware/  
+│  ├─ validateMiddleware.ts  
+│  └─ loggerMiddleware.ts  
+│  
 ├─ routes/  
-│ ├─ itemRoutes.ts  
-│ └─ reportRoutes.ts  
+│  ├─ itemRoutes.ts  
+│  ├─ reportRoutes.ts  
+│  ├─ userRoutes.ts  
+│  ├─ docsRoutes.ts  
+│  └─ indexRoutes.ts  
+│  
+├─ validators/  
+│  └─ schemas.ts  
+│  
 ├─ server.ts  
+│  
 prisma/  
 └─ schema.prisma  
+  
 compose.yml  
 package.json  
+swagger.yaml  
 tsconfig.json  
 README.md  
 
-
-## 🔧 Requisitos
-
-- Node.js >= 18
-- Docker (para rodar PostgreSQL)
+──────────────────────────────  
+🔧 REQUISITOS  
+──────────────────────────────  
+- Node.js ≥ 18
+- PostgreSQL (pode ser via Docker)
 - npm
 
-
-
-## 📡 Endpoints (detalhado)  
-### Itens (CRUD)
-#### POST /items
-
-Body: { "name": string, "quantity": number, "description"?: string }  
-Validações: name obrigatório, quantity inteiro ≥ 0
-
-Retorno: 201 com item criado (e cria StockAdjustment inicial se quantity > 0)
-
-#### GET /items
-Lista todos itens (ordenados por createdAt desc)
-
-#### GET /items/:id
-Retorna item (campo adjustments pode ser incluído conforme implementação)
-
-#### PUT /items/:id
-Atualiza name, description e quantity  
-
-Tratamento de erro 404 quando item não existe  
-
-#### DELETE /items/:id
-Remove item (tratamento 404 se não existente)  
-
-#### POST /items/:id/adjust
-Body: { "type": "IN" | "OUT", "quantity": number}  
-
-Validações: type deve ser IN ou OUT, quantity inteiro > 0  
-
-Lógica: ajusta Item.quantity e cria StockAdjustment; se OUT, valida estoque suficiente  
-
-Regras de negócio: quantidades negativas não permitidas  
-
-### Reports
-#### GET /reports/stock-levels
-Retorna todos itens com { id, name, description, quantity, createdAt, updatedAt }, ordenado por name  
-
-#### GET /reports/recent-adjustments?limit=20
-limit opcional (default 20), máximo 100  
-
-Retorna últimos ajustes ordenados por createdAt desc, com dados do item incluído  
-
-#### GET /reports/logs?limit=25
-Se limit não passado → retorna últimas 25 logs  
-
-Se limit passado → deve satisfazer 1 <= limit <= 100  
-
-Se inválido → 400 Bad Request com JSON: { "error": "escolha um numero de logs entre 1 - 100" }  
-
-Retorna { limit, count, data: [...] } com logs ordenados por createdAt desc  
-
-
-
-## 👨‍💻 Execução local
-
+──────────────────────────────  
+🚀 EXECUÇÃO LOCAL  
+──────────────────────────────  
+## Instalar dependências
 npm install
 
+## Subir container com o banco (opcional)  
+docker compose up  
+
+## Gerar cliente Prisma
 npx prisma generate
 
+## Rodar migrações
 npx prisma migrate dev
 
+## Rodar servidor
 npm run dev
 
-## Exemplos de uso
+A API rodará em:
+http://localhost:3333  
+Documentação Swagger: http://localhost:3333/docs
 
-### ➕ Criar Item
+──────────────────────────────  
+📡 ENDPOINTS PRINCIPAIS  
+──────────────────────────────  
+
+🧍 Usuários  
+────────────  
+POST /users
+Cria novo usuário.
+{
+  "name": "Lucas",
+  "email": "lucas@example.com"
+}
+
+GET /users
+Lista todos os usuários.
+
+GET /users/:id
+Retorna usuário específico.
+
+PUT /users/:id
+Atualiza nome e/ou email.
+
+DELETE /users/:id
+Remove usuário.
+
+📦 Itens  
+────────  
 POST /items
-
-{  
-  "name": "Parafuso M4",  
-  "quantity": 100,  
-  "description": "Pacote com 50 unidades"  
+Cria novo item de estoque.
+{
+  "name": "Parafuso M4",
+  "quantity": 100,
+  "description": "Pacote com 50 unidades"
 }
-### 🔄 Ajustar Estoque
+
+Validações via Zod:
+- name: obrigatório
+- quantity: número inteiro ≥ 0
+
+GET /items
+Lista todos os itens.
+
+GET /items/:id
+Retorna item específico.
+
+PUT /items/:id
+Atualiza nome, descrição e/ou quantidade.
+
+DELETE /items/:id
+Remove item do estoque.
+
+🔄 Ajuste de Estoque  
+────────────────────  
 POST /items/:id/adjust
-Content-Type: application/json
-
-{  
-  "type": "OUT",  
-  "quantity": 10  
+Ajusta o estoque de um item.
+{
+  "type": "OUT",
+  "quantity": 10,
+  "userId": "UUID do usuário responsável"
 }
+
+Regras:
+- type: "IN" ou "OUT"
+- quantity: > 0
+- userId: UUID válido de um usuário existente
+- Se OUT, o estoque deve ser suficiente
+- Cria registro em StockAdjustment
+
+📊 Relatórios  
+─────────────  
+GET /reports/stock-levels
+Lista todos os itens com nível de estoque atual.
+
+GET /reports/recent-adjustments?limit=20
+Retorna últimos ajustes realizados (máx. 100).
+
+GET /reports/logs?limit=25
+Retorna logs recentes de requisições.
+Validação via Zod: limit ∈ [1, 100].
+
+GET /reports/:id
+Retorna detalhes de um ajuste de estoque específico.
+
+PUT /reports/:id
+Permite atualização de registros de ajuste (casos específicos).
+
+DELETE /reports/:id
+Remove registro de ajuste.
+
+
+──────────────────────────────  
+🧾 AUDITORIA AUTOMÁTICA   
+──────────────────────────────  
+Cada requisição gera um registro:
+- Método (GET, POST, etc)
+- Caminho (/items/123)
+- Status HTTP
+- Duração em milissegundos
+
+Tabela RequestLog é usada para relatórios via /reports/logs.
+
+──────────────────────────────  
+🌐 SWAGGER  
+──────────────────────────────  
+A documentação interativa é carregada do arquivo swagger.yaml.
+Disponível em:
+
+- Local: http://localhost:3333/docs
+
+──────────────────────────────  
+🧰 TECNOLOGIAS USADAS  
+──────────────────────────────  
+| Tecnologia       | Função                           |
+|------------------|----------------------------------|
+| Node.js + Express| API HTTP                         |
+| Prisma ORM       | Acesso ao banco PostgreSQL       |
+| Zod              | Validação de dados               |
+| Swagger UI       | Documentação automática          |
+| Docker           | Banco de dados e ambiente        |
+| TypeScript       | Tipagem e robustez               |
+
+──────────────────────────────  
+💾 EXEMPLO DE FLUXO  
+──────────────────────────────  
+1️⃣ Criar um usuário
+POST /users
+{ "name": "Maria", "email": "maria@example.com" }
+
+2️⃣ Criar um item
+POST /items
+{ "name": "Cabo HDMI", "quantity": 50 }
+
+3️⃣ Fazer saída de estoque
+POST /items/:id/adjust
+{ "type": "OUT", "quantity": 5, "userId": "<id da Maria>" }
+
+4️⃣ Ver relatórios
+GET /reports/stock-levels
 

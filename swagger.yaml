@@ -327,7 +327,7 @@ paths:
       summary: Ajusta a quantidade de um item em estoque
       description: Realiza uma operação de entrada (IN) ou saída (OUT) no estoque de um item.
       parameters:
-        - name: id
+        - name: itemId
           in: path
           required: true
           schema:
