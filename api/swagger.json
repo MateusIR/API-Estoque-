@@ -9,6 +9,10 @@
     {
       "url": "http://localhost:3333",
       "description": "Servidor de Desenvolvimento Local"
+    },
+    {
+      "url": "https://projeto-estoque-nine.vercel.app/",
+      "description": "Servidor de Produção"
     }
   ],
   "components": {
