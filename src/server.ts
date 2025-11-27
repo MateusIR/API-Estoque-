@@ -26,7 +26,7 @@ if (process.env.CODESPACE_NAME) {
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
     // Adicionamos este log para depurar a origem da requisição
-    console.log('➡️  Origem da Requisição Recebida:', origin);
+  
 
     // Permite requisições sem 'origin' (ex: Postman, curl) ou se a origem estiver na lista
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
