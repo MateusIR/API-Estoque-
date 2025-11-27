@@ -1,7 +1,7 @@
 {
   "functions": {
     "src/server.ts": {
-      "includeFiles": "swagger.yaml"
+      "includeFiles": "swagger.json"
     }
   }
 }
