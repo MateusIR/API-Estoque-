@@ -6,12 +6,9 @@ import path from 'path';
 
 const router = Router();
 
-
 const filePath = path.join(process.cwd(), "swagger.yaml");
 
-
 const swaggerFile = fs.readFileSync(filePath, "utf8");
-
 
 const swaggerDocument = YAML.parse(swaggerFile);
 
