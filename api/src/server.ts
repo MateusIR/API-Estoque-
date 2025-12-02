@@ -15,35 +15,46 @@ const PORT = process.env.PORT || 3333;
 
 // --- CONFIGURAÇÃO DE CORS PARA CODESPACES ---
 // No server.ts
+// --- CONFIGURAÇÃO DE CORS ---
 const allowedOrigins = [
   'http://localhost:3333', 
-  'http://localhost:5173', // Adicione a porta do seu React aqui (Vite usa 5173 por padrão)
-  'http://localhost:3000',
-  'https://projeto-estoque-nine.vercel.app'  // Create React App usa 3000
+  'http://localhost:5173', // Vite
+  'http://localhost:3000', // React CRA
+  'https://projeto-estoque-nine.vercel.app' // URL de produção fixa
 ];
 
-// Se estiver no Codespaces, adiciona a URL pública à lista de origens permitidas
+// Se estiver no Codespaces
 if (process.env.CODESPACE_NAME) {
   const codespaceUrl = `https://${process.env.CODESPACE_NAME}-${PORT}.app.github.dev`;
-  console.log(`🔑 Permitindo origem CORS para: ${codespaceUrl}`);
   allowedOrigins.push(codespaceUrl);
 }
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    // Adicionamos este log para depurar a origem da requisição
-  
+    // 1. LOG PARA DEBUG (Olhe nos logs da Vercel/Terminal para ver qual URL está chegando)
+    if (origin) {
+        console.log('🔍 Origem recebida:', origin);
+    }
 
-    // Permite requisições sem 'origin' (ex: Postman, curl) ou se a origem estiver na lista
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    // 2. Lógica de Verificação
+    const isAllowed = 
+        !origin || // Permite requisições back-to-back (sem origin, ex: Postman, mobile app)
+        allowedOrigins.includes(origin) || // Está na lista exata
+        origin.endsWith('.vercel.app') || // Permite qualquer preview da Vercel
+        origin.endsWith('.app.github.dev'); // Permite Codespaces dinamicamente
+
+    if (isAllowed) {
       callback(null, true);
     } else {
-      callback(new Error('Não permitido pela política de CORS'));
+      console.error(`❌ Bloqueado pelo CORS: ${origin}`); // Log do erro específico
+      callback(new Error(`Não permitido pela política de CORS. Origem: ${origin}`));
     }
   },
+  credentials: true // Importante se você estiver usando cookies/sessões
 };
-// ----------------------------------------------
+
 app.use(cors(corsOptions));
+// ------------------------------
 
 app.use(express.json());
 app.use(requestLogger);
