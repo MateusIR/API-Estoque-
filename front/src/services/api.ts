@@ -1,7 +1,9 @@
 import axios from 'axios';
 import type { AuthResponse } from '../types';
+import * as dotenv from 'dotenv';
 
-const API_BASE_URL = 'http://localhost:3333';
+dotenv.config();
+const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3333';
 
 // Cria uma instância do axios
 const api = axios.create({

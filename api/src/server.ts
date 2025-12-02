@@ -19,7 +19,7 @@ const allowedOrigins = [
   'http://localhost:3333', 
   'http://localhost:5173', // Adicione a porta do seu React aqui (Vite usa 5173 por padrão)
   'http://localhost:3000',
-  'https://projeto-estoque-nine.vercel.app/'  // Create React App usa 3000
+  'https://projeto-estoque-nine.vercel.app'  // Create React App usa 3000
 ];
 
 // Se estiver no Codespaces, adiciona a URL pública à lista de origens permitidas
