@@ -1,9 +1,13 @@
+// Arquivo: src/services/api.ts
 import axios from 'axios';
 import type { AuthResponse } from '../types';
-import * as dotenv from 'dotenv';
 
-dotenv.config();
-const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3333';
+// REMOVIDO: import * as dotenv from 'dotenv';
+// REMOVIDO: dotenv.config();
+
+// Se estiver usando Vite (padrão atual), use import.meta.env.VITE_API_BASE_URL
+// Se estiver usando Create React App, use process.env.REACT_APP_API_BASE_URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3333';
 
 // Cria uma instância do axios
 const api = axios.create({
@@ -51,7 +55,8 @@ api.interceptors.response.use(
 
 export default api;
 
-// Funções auxiliares para serviços específicos
+// ... (Mantenha o restante das exportações: authApi, itemApi, reportApi, userApi iguais ao original)
+// Apenas copie o restante das funções exportadas (authApi, itemApi, etc) que já estavam no arquivo.
 export const authApi = {
   login: (credentials: { email: string; password: string }): Promise<{ data: AuthResponse }> =>
     api.post('/auth/login', credentials),
