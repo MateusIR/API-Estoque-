@@ -133,21 +133,7 @@ const EditItem: React.FC = () => {
               />
             </div>
 
-            {/* Quantidade */}
-            <div className="form-group">
-              <label className="form-label">
-                Quantidade
-              </label>
-              <input
-                type="number"
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                placeholder="0"
-                className="form-number-input"
-                required
-                min="0"
-              />
-            </div>
+           
 
             {/* Botões */}
             <div className="form-buttons">
