@@ -30,7 +30,7 @@ const Reports: React.FC = () => {
       setError('');
       const [levels, adjustments, logsData] = await Promise.all([
         reportService.getStockLevels(),
-        reportService.getRecentAdjustments(10),
+        reportService.getRecentAdjustments(25),
         reportService.getLogs(logsCount),
       ]);
       setStockLevels(levels);
