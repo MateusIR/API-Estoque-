@@ -2,15 +2,28 @@ import { Request, Response, NextFunction } from "express";
 import prisma from "../infra/prisma.js";
 
 export async function requestLogger(req: Request, res: Response, next: NextFunction) {
-  // Rotas que serão logadas
-  const targetRoutes = ['/auth', '/users', '/items'];
 
-  const shouldLog = targetRoutes.some(route => req.originalUrl.startsWith(route));
+  // Rotas que devem ser logadas (mas com regras especiais)
+  const targetRoutes = ['/auth', '/users', '/items', '/reports'];
 
-  if (!shouldLog) {
+  const startsWithTarget = targetRoutes.some(route =>
+    req.originalUrl.startsWith(route)
+  );
+
+  // Se não é rota monitorada, segue direto
+  if (!startsWithTarget) {
     return next();
   }
 
+  
+  if (
+    req.method === "GET" &&
+    (req.originalUrl.startsWith("/items") || req.originalUrl.startsWith("/reports") || req.originalUrl.startsWith("/users"))
+  ) {
+    return next();
+  }
+
+  // Caso contrário, loga normalmente
   const start = Date.now();
 
   res.on("finish", async () => {
