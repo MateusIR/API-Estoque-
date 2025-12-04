@@ -79,7 +79,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, showLogout, showlinks = false, on
             <button 
               onClick={toggleTheme}
               className="theme-toggle-btn"
-               style={{ marginLeft: '1rem' }}
+               style={{ marginLeft: '0.5rem' }}
             >
               {isDarkMode ? (
                 <>

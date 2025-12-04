@@ -277,7 +277,7 @@ const Reports: React.FC = () => {
                               </div>
                               <span className="stock-level-text">
                                 {item.quantity === 0 ? 'Esgotado' : 
-                                 item.quantity <= 5 ? 'Baixo' : 'Normal'}
+                                 item.quantity <= LOW_STOCK ? 'Baixo' : 'Normal'}
                               </span>
                             </div>
                           </td>

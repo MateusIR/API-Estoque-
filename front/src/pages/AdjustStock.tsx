@@ -14,7 +14,7 @@ const AdjustStock: React.FC = () => {
   const [itemName, setItemName] = useState('');
   const [currentStock, setCurrentStock] = useState(0);
   const [error, setError] = useState('');
-  const { user,} = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   // Carregar informações do item
@@ -123,6 +123,12 @@ const AdjustStock: React.FC = () => {
                   type="button"
                   className={`stock-type-button ${type === 'OUT' ? 'active' : ''}`}
                   onClick={() => setType('OUT')}
+                  // ALTERADO: Estilo condicional para o botão de Saída
+                  style={type === 'OUT' ? { 
+                    backgroundColor: '#ef4444', 
+                    borderColor: '#ef4444', 
+                    color: 'white' 
+                  } : {}}
                 >
                   <span className="material-symbols-outlined stock-type-icon">
                     remove_circle
@@ -148,34 +154,10 @@ const AdjustStock: React.FC = () => {
               
               {/* Botões rápidos de quantidade */}
               <div className="quantity-buttons">
-                <button
-                  type="button"
-                  className="quantity-button"
-                  onClick={() => handleQuantityQuick(1)}
-                >
-                  1
-                </button>
-                <button
-                  type="button"
-                  className="quantity-button"
-                  onClick={() => handleQuantityQuick(5)}
-                >
-                  5
-                </button>
-                <button
-                  type="button"
-                  className="quantity-button"
-                  onClick={() => handleQuantityQuick(10)}
-                >
-                  10
-                </button>
-                <button
-                  type="button"
-                  className="quantity-button"
-                  onClick={() => handleQuantityQuick(50)}
-                >
-                  50
-                </button>
+                <button type="button" className="quantity-button" onClick={() => handleQuantityQuick(1)}>1</button>
+                <button type="button" className="quantity-button" onClick={() => handleQuantityQuick(5)}>5</button>
+                <button type="button" className="quantity-button" onClick={() => handleQuantityQuick(10)}>10</button>
+                <button type="button" className="quantity-button" onClick={() => handleQuantityQuick(50)}>50</button>
               </div>
             </div>
 
@@ -214,7 +196,7 @@ const AdjustStock: React.FC = () => {
                   color: '#ff3b30',
                   fontSize: '0.875rem'
                 }}>
-                  ⚠️ Atenção: Esta operação deixará o estoque negativo!
+                   Atenção: Esta operação deixará o estoque negativo!
                 </div>
               )}
             </div>
@@ -234,7 +216,9 @@ const AdjustStock: React.FC = () => {
                 disabled={isOutOfStock}
                 style={{
                   opacity: isOutOfStock ? 0.5 : 1,
-                  cursor: isOutOfStock ? 'not-allowed' : 'pointer'
+                  cursor: isOutOfStock ? 'not-allowed' : 'pointer',
+                  backgroundColor: type === 'OUT' ? '#ef4444' : 'var(--primary)',
+                  borderColor: type === 'OUT' ? '#ef4444' : 'var(--primary)'
                 }}
               >
                 <span className="material-symbols-outlined" style={{ 

@@ -2,10 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import prisma from "../infra/prisma.js";
 
 export async function requestLogger(req: Request, res: Response, next: NextFunction) {
-
+  // Rotas que serão logadas
   const targetRoutes = ['/auth', '/users', '/items'];
 
-  const shouldLog = targetRoutes.some((route) => req.originalUrl.startsWith(route));
+  const shouldLog = targetRoutes.some(route => req.originalUrl.startsWith(route));
 
   if (!shouldLog) {
     return next();
@@ -15,6 +15,7 @@ export async function requestLogger(req: Request, res: Response, next: NextFunct
 
   res.on("finish", async () => {
     const duration = Date.now() - start;
+
     try {
       await prisma.requestLog.create({
         data: {
@@ -24,8 +25,8 @@ export async function requestLogger(req: Request, res: Response, next: NextFunct
           durationMs: duration,
         },
       });
-    } catch (err) {
-      console.error("Erro ao salvar log:", err);
+    } catch (error) {
+      console.error("Erro ao salvar log:", error);
     }
   });
 

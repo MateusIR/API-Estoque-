@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 
+
 /* Fonte Inter opcional */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 /* Configurações de fonte e cores */
@@ -22,6 +23,8 @@
   --error-text: #721c24;
   --white: #ffffff;
 }
+
+
 
 /* Estilos globais */
 body {
@@ -2126,4 +2129,342 @@ body {
   background-color: var(--primary);
   color: var(--white);
   border-color: var(--primary);
+}
+
+/* ============= SEARCH BAR ============= */
+.search-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.search-input-container {
+  flex: 1;
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem 0 3rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-light);
+  background-color: var(--input-bg-light);
+  color: var(--text-light-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.dark .search-input {
+  background-color: var(--input-bg-dark);
+  border-color: var(--border-dark);
+  color: var(--text-dark-primary);
+}
+
+.search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(52, 199, 89, 0.5);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light-secondary);
+}
+
+.dark .search-icon {
+  color: var(--text-dark-secondary);
+}
+
+.search-clear {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-light-secondary);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-clear:hover {
+  color: var(--primary);
+}
+
+.search-results {
+  color: var(--text-light-secondary);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.dark .search-results {
+  color: var(--text-dark-secondary);
+}
+
+/* ============= ITEMS HEADER ============= */
+.items-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.items-title {
+  color: var(--text-light-primary);
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.dark .items-title {
+  color: var(--text-dark-primary);
+}
+
+.items-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+
+
+/* ============= QUANTITY INDICATORS ============= */
+/* Modificando as cores para estoque baixo em amarelo */
+.quantity-low {
+  background-color: rgba(255, 204, 0, 0.1);
+  color: #ffcc00;
+  border: 1px solid rgba(255, 204, 0, 0.2);
+}
+
+.quantity-available {
+  background-color: rgba(52, 199, 89, 0.1);
+  color: var(--primary);
+  border: 1px solid rgba(52, 199, 89, 0.2);
+}
+
+.quantity-unavailable {
+  background-color: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+  border: 1px solid rgba(255, 59, 48, 0.2);
+}
+
+/* Para a página de relatórios também */
+.stock-level-low .stock-level-fill {
+  background-color: #ffcc00;
+}
+
+.stock-level-low .stock-level-text {
+  color: #ffcc00;
+}
+
+.stock-level-medium .stock-level-fill {
+  background-color: #ffcc00;
+}
+
+.stock-level-medium .stock-level-text {
+  color: #ffcc00;
+}
+
+/* ============= ITEMS LIST ============= */
+.items-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.item-card {
+  background-color: var(--background-light);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(15, 15, 15, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.dark .item-card {
+  background-color: var(--background-dark);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dark .item-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.item-name {
+  color: var(--text-light-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+
+.dark .item-name {
+  color: var(--text-dark-primary);
+}
+
+.item-quantity {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.item-description {
+  color: var(--text-light-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.dark .item-description {
+  color: var(--text-dark-secondary);
+}
+
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.dark .item-footer {
+  border-top-color: var(--border-dark);
+}
+
+.item-date {
+  color: var(--text-light-secondary);
+  font-size: 0.75rem;
+}
+
+.dark .item-date {
+  color: var(--text-dark-secondary);
+}
+
+.item-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.item-action-button {
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.edit-button {
+  background-color: rgba(255, 204, 0, 0.1);
+  color: #ffcc00;
+}
+
+.edit-button:hover {
+  background-color: rgba(255, 204, 0, 0.2);
+}
+
+.adjust-button {
+  background-color: rgba(52, 199, 89, 0.1);
+  color: var(--primary);
+}
+
+.adjust-button:hover {
+  background-color: rgba(52, 199, 89, 0.2);
+}
+
+.delete-button {
+  background-color: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+}
+
+.delete-button:hover {
+  background-color: rgba(255, 59, 48, 0.2);
+}
+
+/* Container principal das estatísticas */
+.stats-home {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: var(--input-bg-light);
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-light);
+}
+
+/* Título */
+.stats-title {
+  color: var(--text-light-primary);
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+}
+
+/* Grid das linhas */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+/* Linha do indicador */
+.stats-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Bolinhas coloridas */
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* Cores específicas */
+.dot-green {
+  background-color: var(--primary);
+}
+
+.dot-yellow {
+  background-color: #ffcc00;
+}
+
+.dot-red {
+  background-color: #ff3b30;
+}
+
+/* Texto secundário */
+.stats-text {
+  color: var(--text-light-secondary);
 }
