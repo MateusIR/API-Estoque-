@@ -6,10 +6,15 @@ import { useAuth } from '../contexts/AuthContext';
 import { authService } from '../services/auth';
 import { loginSchema, type LoginInput } from '../schemas';
 import LoadingSpinner from '../components/LoadingSpinner';
+import Navbar from '../components/Navbar';
+import '../App.css';
 
 const Login: React.FC = () => {
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDarkMode] = useState(false);
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -20,6 +25,8 @@ const Login: React.FC = () => {
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
   });
+
+
 
   const onSubmit = async (data: LoginInput) => {
     try {
@@ -37,80 +44,123 @@ const Login: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className={`loading-container ${isDarkMode ? 'dark' : 'light'}`}>
         <LoadingSpinner size="large" text="Autenticando..." />
       </div>
     );
   }
 
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Entre na sua conta
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Ou{' '}
-            <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
-              crie uma nova conta
-            </Link>
-          </p>
-        </div>
-        
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            {error && (
-              <div className="mb-4 bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded-md">
-                {error}
-              </div>
-            )}
-            
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email
-              </label>
-              <input
-                {...register('email')}
-                id="email"
-                type="email"
-                autoComplete="email"
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="seu@email.com"
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-              )}
-            </div>
-            
-            <div className="mb-6">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Senha
-              </label>
-              <input
-                {...register('password')}
-                id="password"
-                type="password"
-                autoComplete="current-password"
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="••••••••"
-              />
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
-              )}
+    <div className="main-container">
+      <Navbar />
+
+      {/* Conteúdo do Login */}
+      <div className={`login-container ${isDarkMode ? 'dark' : 'light'}`}>
+        <div className="login-content">
+          {/* Logo */}
+          <div className="login-logo-container">
+            <div className="login-logo">
+              <span className="material-symbols-outlined" style={{ color: 'var(--primary)', fontSize: '32px' }}>
+                inventory_2
+              </span>
             </div>
           </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? 'Entrando...' : 'Entrar'}
-            </button>
-          </div>
-        </form>
+          {/* Título */}
+          <h1 className="login-title">
+            Welcome Back
+          </h1>
+
+          <p className="login-subtitle">
+            Log in to your inventory
+          </p>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="login-form">
+            {/* Erro da API */}
+            {error && (
+              <div className="login-error">
+                {error}
+              </div>
+            )}
+
+            {/* Email */}
+            <div>
+              <label className="login-label">
+                Email Address
+              </label>
+              <div className="input-container">
+                <span className="material-symbols-outlined input-icon">
+                  mail
+                </span>
+
+                <input
+                  {...register('email')}
+                  placeholder="Enter your email"
+                  className="login-input"
+                />
+
+                {errors.email && (
+                  <p className="error-text">{errors.email.message}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="login-label">
+                Password
+              </label>
+              <div className="input-container">
+                <span className="material-symbols-outlined input-icon">
+                  lock
+                </span>
+
+                <input
+                  {...register('password')}
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Enter your password"
+                  className="login-input"
+                />
+
+                {/* Toggle password */}
+                <button
+                  type="button"
+                  className="password-toggle"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  <span className="material-symbols-outlined">
+                    {showPassword ? "visibility" : "visibility_off"}
+                  </span>
+                </button>
+
+                {errors.password && (
+                  <p className="error-text">{errors.password.message}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Botão Login */}
+            <div style={{ paddingTop: '32px', paddingBottom: '24px', width: '100%' }}>
+              <button
+                type="submit"
+                className="login-button"
+              >
+                Log In
+              </button>
+            </div>
+
+            {/* Link Register */}
+            <div className="signup-text">
+              <p>
+                Don't have an account?{' '}
+                <Link to="/register" className="signup-link">
+                  Sign Up
+                </Link>
+              </p>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
