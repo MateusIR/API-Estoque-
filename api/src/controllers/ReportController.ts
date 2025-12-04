@@ -58,7 +58,16 @@ async update(req: Request, res: Response) { //sei lá kkkk
       res.status(500).json({ error: "Erro ao buscar ajustes recentes" });
     }
   }
-
+ async AdjustmentsByItemId(req: Request, res: Response) {
+    try {
+      const { id } = req.params;  
+      const adjustments = await ReportService.getStockAdjustmentsByItemId(id);
+      res.json(adjustments);
+    } catch (err: any) {
+      console.error("Erro getAdjustmentsByItemId:", err);
+      res.status(500).json({ error: "Erro ao buscar ajustes por ID do item" });
+    }
+  }
   async logs(req: Request, res: Response) {
     try {
       const limit = req.query.limit ? Number(req.query.limit) : undefined;

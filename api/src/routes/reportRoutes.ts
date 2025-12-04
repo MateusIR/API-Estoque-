@@ -15,6 +15,7 @@ router.use(authenticate);
 
 router.get("/stock-levels", ReportController.stockLevels);
 router.get("/recent-adjustments", validateQuery(recentAdjustmentsQuerySchema), ReportController.recentAdjustments); 
+router.get("/adjustments/:id", validateParams(uuidParamSchema), ReportController.AdjustmentsByItemId);
 router.get("/logs", validateQuery(logsQuerySchema), ReportController.logs);
 router.get("/:id", validateParams(uuidParamSchema), ReportController.get); 
 router.put("/:id", validateParams(uuidParamSchema), validateBody(updateReportSchema), ReportController.update); 

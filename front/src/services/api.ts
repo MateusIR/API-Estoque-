@@ -38,10 +38,14 @@ api.interceptors.response.use(
     if (error.response) {
       // Tratar erros de autenticação
       if (error.response.status === 401) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = '/login';
-      }
+  const isLoginRoute = error.config?.url?.includes('/auth/login');
+
+  if (!isLoginRoute) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/login';
+  }
+}
       
       const message = error.response.data?.error || 'Erro na requisição';
       return Promise.reject(new Error(message));
@@ -55,8 +59,6 @@ api.interceptors.response.use(
 
 export default api;
 
-// ... (Mantenha o restante das exportações: authApi, itemApi, reportApi, userApi iguais ao original)
-// Apenas copie o restante das funções exportadas (authApi, itemApi, etc) que já estavam no arquivo.
 export const authApi = {
   login: (credentials: { email: string; password: string }): Promise<{ data: AuthResponse }> =>
     api.post('/auth/login', credentials),
@@ -90,6 +92,8 @@ export const reportApi = {
   
   getLogs: (limit?: number) =>
     api.get('/reports/logs', { params: { limit } }),
+  findAdjustmentById: (itemId: string, limit?: number) =>
+    api.get(`/reports/adjustments/${itemId}`, { params: { limit } }),
 };
 
 export const userApi = {

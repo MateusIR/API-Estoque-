@@ -75,11 +75,13 @@ const Login: React.FC = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className="login-form">
             {/* Erro da API */}
-            {error && (
-              <div className="login-error">
-                {error}
-              </div>
-            )}
+           {error && (
+          <div className="alert-error">
+            <span className="material-symbols-outlined">error</span>
+            {error}
+          </div>
+        )}
+
 
             {/* Email */}
             <div>

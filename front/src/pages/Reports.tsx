@@ -111,10 +111,11 @@ const Reports: React.FC = () => {
 
   // Função para determinar o nível de estoque
   const getStockLevel = (quantity: number) => {
-    if (quantity === 0) return 'low';
-    if (quantity <= LOW_STOCK) return 'medium';
-    return 'high';
-  };
+  const q = Number(quantity);
+  if (q === 0) return 'out-of-stock'; 
+  if (q <= LOW_STOCK) return 'medium';
+  return 'high';
+};
 
   // Função para determinar a cor do método HTTP
   const getMethodColor = (method: string) => {
@@ -277,7 +278,7 @@ const Reports: React.FC = () => {
                               </div>
                               <span className="stock-level-text">
                                 {item.quantity === 0 ? 'Esgotado' : 
-                                 item.quantity <= LOW_STOCK ? 'Baixo' : 'Normal'}
+                                item.quantity <= LOW_STOCK ? 'Baixo' : 'Normal'}
                               </span>
                             </div>
                           </td>

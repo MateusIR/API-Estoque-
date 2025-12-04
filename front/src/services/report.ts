@@ -16,4 +16,8 @@ export const reportService = {
     const response = await reportApi.getLogs(limit);
     return response.data.data;
   },
+  async getAdjustmentsByItemId(itemId: string, limit?: number): Promise<StockAdjustment[]> {
+    const response = await reportApi.findAdjustmentById(itemId, limit);
+    return response.data;
+  },
 };

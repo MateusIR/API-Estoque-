@@ -26,8 +26,18 @@ async delete(id: string) {
       orderBy: { name: "asc" },
     });
   }
+  async getStockAdjustmentsByItemId(itemId: string, limit?: number) {
+    return prisma.stockAdjustment.findMany({
+      where: { itemId },
+      orderBy: { createdAt: "desc" },
+      take: limit,
+      include: {
+        user: { select: { id: true, name: true } },
+      },
+    });
+  }
 
-  async getRecentAdjustments(limit: number = 20) {
+  async getRecentAdjustments(limit: number = 25) {
   return prisma.stockAdjustment.findMany({
     orderBy: { createdAt: "desc" },
     take: Math.min(limit, 100),
