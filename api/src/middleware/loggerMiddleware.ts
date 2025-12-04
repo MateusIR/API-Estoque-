@@ -3,7 +3,7 @@ import prisma from "../infra/prisma.js";
 
 export async function requestLogger(req: Request, res: Response, next: NextFunction) {
 
-  const targetRoutes = ['/auth', '/users', '/items', '/reports'];
+  const targetRoutes = ['/auth', '/users', '/items'];
 
   const shouldLog = targetRoutes.some((route) => req.originalUrl.startsWith(route));
 

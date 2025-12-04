@@ -26,8 +26,6 @@ const Login: React.FC = () => {
     resolver: zodResolver(loginSchema),
   });
 
-
-
   const onSubmit = async (data: LoginInput) => {
     try {
       setIsLoading(true);
@@ -50,7 +48,6 @@ const Login: React.FC = () => {
     );
   }
 
-
   return (
     <div className="main-container">
       <Navbar />
@@ -69,11 +66,11 @@ const Login: React.FC = () => {
 
           {/* Título */}
           <h1 className="login-title">
-            Welcome Back
+            Bem-vindo ao Estocando
           </h1>
 
           <p className="login-subtitle">
-            Log in to your inventory
+            Entre no seu estoque
           </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="login-form">
@@ -87,7 +84,7 @@ const Login: React.FC = () => {
             {/* Email */}
             <div>
               <label className="login-label">
-                Email Address
+                Endereço de Email
               </label>
               <div className="input-container">
                 <span className="material-symbols-outlined input-icon">
@@ -96,7 +93,7 @@ const Login: React.FC = () => {
 
                 <input
                   {...register('email')}
-                  placeholder="Enter your email"
+                  placeholder="Digite seu email"
                   className="login-input"
                 />
 
@@ -106,10 +103,10 @@ const Login: React.FC = () => {
               </div>
             </div>
 
-            {/* Password */}
+            {/* Senha */}
             <div>
               <label className="login-label">
-                Password
+                Senha
               </label>
               <div className="input-container">
                 <span className="material-symbols-outlined input-icon">
@@ -119,11 +116,11 @@ const Login: React.FC = () => {
                 <input
                   {...register('password')}
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Enter your password"
+                  placeholder="Digite sua senha"
                   className="login-input"
                 />
 
-                {/* Toggle password */}
+                {/* Mostrar/ocultar senha */}
                 <button
                   type="button"
                   className="password-toggle"
@@ -146,16 +143,16 @@ const Login: React.FC = () => {
                 type="submit"
                 className="login-button"
               >
-                Log In
+                Entrar
               </button>
             </div>
 
-            {/* Link Register */}
+            {/* Link para cadastro */}
             <div className="signup-text">
               <p>
-                Don't have an account?{' '}
+                Não tem uma conta?{' '}
                 <Link to="/register" className="signup-link">
-                  Sign Up
+                  Cadastre-se
                 </Link>
               </p>
             </div>
