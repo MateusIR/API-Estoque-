@@ -32,7 +32,7 @@ model StockAdjustment {
   id        String   @id @default(uuid())
   item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
   itemId    String
-  user      User     @relation(fields: [userId], references: [id] onDelete: SetNull)
+  user      User     @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String
   quantity  Int
   type      AdjustmentType
